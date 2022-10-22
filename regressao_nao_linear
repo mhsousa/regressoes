@@ -1,0 +1,32 @@
+#Solicitando as bibliotecas
+from sklearn.datasets import load_iris
+import pandas as pd
+from scipy.optimize import curve_fit
+import numpy as np
+import matplotlib.pyplot as plt
+
+#Solicitando os dados
+iris=load_iris()
+iris_df=pd.DataFrame(data=iris.data, columns=iris.feature_names)
+sepal_length=iris_df['sepal length (cm)']
+petal_length=iris_df['petal length (cm)']
+x = np.array(sepal_length)
+y = np.array(petal_length)
+
+#Definindo a função
+def model(z, a, b):
+    return a * np.exp(-b * z)
+    
+#Criando o modelo
+popt, pcov = curve_fit(model, x, y)
+xx = np.linspace(1, 10,10)
+yy = model(xx, *popt)
+
+#plotando os gráfios
+plt.plot (xx,yy, color="r")
+plt.scatter (xx,yy, color="r", label="Previsão")
+plt.scatter(sepal_length,petal_length, label="Valores")
+plt.ylim(0,10)
+plt.legend()
+plt.title('REGRESSÃO NÃO LINEAR')
+plt.show()
